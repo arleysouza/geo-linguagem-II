@@ -1,0 +1,103 @@
+﻿# Exercício 1
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+print("Distância:", jcr.distance(stb))
+
+
+# Exercício 2
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+gua = QgsPointXY(-46.03542, -23.41555)
+geom = QgsGeometry()
+linha = geom.fromPolylineXY([jcr,stb,gua])
+centro = linha.centroid()
+print("Centroide:", centro.asPoint().toString())
+
+
+# Exercício 3
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+gua = QgsPointXY(-46.03542, -23.41555)
+geom = QgsGeometry()
+linha = geom.fromPolylineXY([jcr,stb,gua])
+print("Extensão:", linha.length())
+
+
+# Exercício 4
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+gua = QgsPointXY(-46.03542, -23.41555)
+geom = QgsGeometry()
+linha = geom.fromPolylineXY([jcr,stb,gua])
+box = linha.boundingBox()
+print(box.toString())
+
+
+# Exercício 5
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+gua = QgsPointXY(-46.03542, -23.41555)
+geom = QgsGeometry()
+linha = geom.fromPolylineXY([jcr,stb,gua])
+box = linha.boundingBox()
+print("Área:", box.area())
+
+
+# Exercício 6
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+gua = QgsPointXY(-46.03542, -23.41555)
+geom = QgsGeometry()
+linha = geom.fromPolylineXY([jcr,stb,gua])
+box = linha.boundingBox()
+print("Perímetro:", box.perimeter())
+
+
+# Exercício 7
+a = QgsPointXY(0, 0)
+b = QgsPointXY(2, 2)
+c = QgsPointXY(1, 1)
+d = QgsPointXY(3, 3)
+r1 = QgsRectangle(a,b)
+r2 = QgsRectangle(c,d)
+intersecao = r1.intersect(r2)
+print("Interseção:", intersecao.toString() )
+
+
+# Exercício 8
+a = QgsPointXY(0, 0)
+b = QgsPointXY(3, 0)
+c = QgsPointXY(3, 3)
+d = QgsPointXY(0, 3)
+poligono = QgsGeometry().fromPolygonXY([[a,b,c,d]])
+print( poligono.asWkt() )
+
+
+# Exercício 9
+a = QgsPointXY(0, 0)
+b = QgsPointXY(3, 0)
+c = QgsPointXY(3, 3)
+d = QgsPointXY(0, 3)
+
+e = QgsPointXY(1, 1)
+f = QgsPointXY(2, 1)
+g = QgsPointXY(2, 2)
+h = QgsPointXY(1, 2)
+
+poligono = QgsGeometry().fromPolygonXY([[a,b,c,d],[e,f,g,h]])
+print( poligono.asWkt() )
+
+
+# Exercício 10
+a = QgsPointXY(0, 0)
+b = QgsPointXY(3, 0)
+c = QgsPointXY(3, 3)
+d = QgsPointXY(0, 3)
+
+e = QgsPointXY(1, 1)
+f = QgsPointXY(2, 1)
+g = QgsPointXY(2, 2)
+h = QgsPointXY(1, 2)
+
+poligono = QgsGeometry().fromPolygonXY([[a,b,c,d],[e,f,g,h]])
+print("Área:", poligono.area() )
