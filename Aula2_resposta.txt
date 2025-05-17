@@ -1,0 +1,193 @@
+﻿# Exercício 1
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+jcr_m = transformacao.transform(jcr)
+stb_m = transformacao.transform(stb)
+
+print("Distância:", jcr.distance(stb))
+print("Distância em metros:", jcr_m.distance(stb_m))
+
+
+# Exercício 2
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+jcr = QgsPointXY(-45.96642, -23.30555)
+stb = QgsPointXY(-45.88441, -23.39755)
+gua = QgsPointXY(-46.03542, -23.41555)
+
+jcr_m = transformacao.transform(jcr)
+stb_m = transformacao.transform(stb)
+gua_m = transformacao.transform(gua)
+
+geom = QgsGeometry()
+linha = geom.fromPolylineXY([jcr_m,stb_m,gua_m])
+print("Extensão em metros:", linha.length())
+
+
+# Exercício 3
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+inferior = QgsPointXY(-46.03542, -23.41555)
+superior = QgsPointXY(-45.96642, -23.30555)
+retangulo = QgsRectangle(inferior,superior)
+retangulo_m = transformacao.transformBoundingBox(retangulo)
+print("Retângulo:", retangulo.toString() )
+print("Retângulo em metros:", retangulo_m.toString() )
+
+
+# Exercício 4
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+inferior = QgsPointXY(-46.03542, -23.41555)
+superior = QgsPointXY(-45.96642, -23.30555)
+retangulo = QgsRectangle(inferior,superior)
+retangulo_m = transformacao.transformBoundingBox(retangulo)
+
+print("Área em metros:", retangulo_m.area() )
+print("Perímetro em metros:", retangulo_m.perimeter() )
+
+
+# Exercício 5
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+inferior = QgsPointXY(-46.03542, -23.41555)
+superior = QgsPointXY(-45.96642, -23.30555)
+retangulo = QgsRectangle(inferior,superior)
+retangulo_m = transformacao.transformBoundingBox(retangulo)
+alterado = retangulo_m.buffered(1000)
+
+print("Retângulo:", retangulo_m.toString() )
+print("Alterado: ", alterado.toString() )
+
+
+# Exercício 6
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+jcr = QgsPointXY(-45.96642, -23.30555)
+prb = QgsPointXY(-45.673288, -23.373758)
+sal = QgsPointXY(-45.847091, -23.531665)
+gua = QgsPointXY(-46.03542, -23.41555)
+
+jcr_m = transformacao.transform(jcr)
+prb_m = transformacao.transform(prb)
+sal_m = transformacao.transform(sal)
+gua_m = transformacao.transform(gua)
+
+poligono = QgsGeometry().fromPolygonXY([[jcr_m, prb_m, sal_m, gua_m,jcr_m]])
+print("Área em metros:", poligono.area() )
+
+
+# Exercício 7
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+jcr = QgsPointXY(-45.96642, -23.30555)
+prb = QgsPointXY(-45.673288, -23.373758)
+sal = QgsPointXY(-45.847091, -23.531665)
+gua = QgsPointXY(-46.03542, -23.41555)
+
+jcr_m = transformacao.transform(jcr)
+prb_m = transformacao.transform(prb)
+sal_m = transformacao.transform(sal)
+gua_m = transformacao.transform(gua)
+
+poligono = QgsGeometry().fromPolygonXY([[jcr_m, prb_m, sal_m, gua_m,jcr_m]])
+retangulo = poligono.boundingBox()
+print("REM:", retangulo.toString() )
+
+
+# Exercício 8
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+a = QgsPointXY(0, 0)
+b = QgsPointXY(2, 2)
+c = QgsPointXY(1, 1)
+d = QgsPointXY(3, 3)
+r1 = QgsRectangle(a,b)
+r2 = QgsRectangle(c,d)
+intersecao = r1.intersect(r2)
+
+intersecao_m = transformacao.transformBoundingBox(intersecao)
+print("Área da interseção em metros:", intersecao_m.area() )
+print("Perímetro da interseção em metros:", intersecao_m.perimeter() )
+
+
+# Exercício 9
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+a = QgsPointXY(0, 0)
+b = QgsPointXY(3, 0)
+c = QgsPointXY(3, 3)
+d = QgsPointXY(0, 3)
+
+a = transformacao.transform(a)
+b = transformacao.transform(b)
+c = transformacao.transform(c)
+d = transformacao.transform(d)
+
+poligono = QgsGeometry().fromPolygonXY([[a,b,c,d]])
+print("Área em metros:", poligono.area() )
+print("Perímetro em metros:", poligono.length() )
+
+
+# Exercício 10
+origem = QgsCoordinateReferenceSystem("EPSG:4326")
+destino = QgsCoordinateReferenceSystem("EPSG:31983")
+projeto = QgsProject.instance()
+transformacao = QgsCoordinateTransform(origem, destino, projeto)
+
+a = QgsPointXY(0, 0)
+b = QgsPointXY(3, 0)
+c = QgsPointXY(3, 3)
+d = QgsPointXY(0, 3)
+
+e = QgsPointXY(1, 1)
+f = QgsPointXY(2, 1)
+g = QgsPointXY(2, 2)
+h = QgsPointXY(1, 2)
+
+a = transformacao.transform(a)
+b = transformacao.transform(b)
+c = transformacao.transform(c)
+d = transformacao.transform(d)
+
+e = transformacao.transform(e)
+f = transformacao.transform(f)
+g = transformacao.transform(g)
+h = transformacao.transform(h)
+
+poligono = QgsGeometry().fromPolygonXY([[a,b,c,d],[e,f,g,h]])
+
+print("Área em metros:", poligono.area() )
+print("Perímetro em metros:", poligono.length() )
+
+
