@@ -1,0 +1,231 @@
+﻿# Exercício 1
+# Define o caminho completo para o arquivo GeoPackage
+caminho = "D:/bdgeo/municipio/municipio.gpkg"
+
+# Define o nome que será atribuído à camada dentro do QGIS (nome de exibição)
+nome_camada = "exer01"
+
+# Cria uma camada vetorial a partir do arquivo GeoPackage utilizando o driver "ogr"
+camada = QgsVectorLayer(caminho, nome_camada, "ogr")
+
+# Verifica se a camada foi carregada corretamente (validação)
+if not camada.isValid():
+    # Informa erro caso o caminho esteja incorreto ou o arquivo seja inválido
+    print("Erro ao carregar a camada.")  
+else:
+    # Adiciona a camada ao painel de camadas do QGIS (interface gráfica)
+    QgsProject.instance().addMapLayer(camada)
+
+
+# Exercício 2
+# Define o nome da camada
+nome_camada = "exer02"
+
+# Cria uma camada vetorial temporária do tipo ponto, com sistema de referência WGS 84
+camada = QgsVectorLayer("Point?crs=EPSG:4326", nome_camada, "memory")
+
+# Obtém o provedor de dados da camada, responsável por manipular feições e atributos
+provider = camada.dataProvider()
+
+# Adiciona o campo "nome" (tipo texto) à camada
+provider.addAttributes([QgsField("nome", QVariant.String)])
+
+# Adiciona o campo "populacao" (tipo inteiro) à camada
+provider.addAttributes([QgsField("populacao", QVariant.Int)])
+
+# Atualiza a definição de campos da camada para refletir os novos atributos
+camada.updateFields()
+
+# Define os pontos com coordenadas geográficas
+jcr = QgsPointXY(-45.96642, -23.30555)   # Jacareí
+stb = QgsPointXY(-45.88441, -23.39755)   # Santa Branca
+jam = QgsPointXY(-45.69457, -23.25871)   # Jambeiro
+
+# Converte os pontos QgsPointXY para objetos QgsGeometry, exigidos pelas feições
+jcr_geom = QgsGeometry.fromPointXY(jcr)
+stb_geom = QgsGeometry.fromPointXY(stb)
+jam_geom = QgsGeometry.fromPointXY(jam)
+
+# Cria uma feição para Jacareí e define sua geometria e atributos
+jcr_feicao = QgsFeature(camada.fields())
+jcr_feicao.setGeometry(jcr_geom)           # Define a geometria (ponto)
+jcr_feicao.setAttribute(0, "Jacareí")      # Define o nome (campo na posição 0)
+jcr_feicao.setAttribute(1, 240275)         # Define a população (campo na posição 1)
+provider.addFeature(jcr_feicao)            # Adiciona a feição ao provedor de dados
+
+# Cria uma feição para Santa Branca e define sua geometria e atributos
+stb_feicao = QgsFeature(camada.fields())
+stb_feicao.setGeometry(stb_geom)
+stb_feicao.setAttribute(0, "Santa Branca")
+stb_feicao.setAttribute(1, 13975)
+provider.addFeature(stb_feicao)
+
+# Cria uma feição para Jambeiro e define sua geometria e atributos
+jam_feicao = QgsFeature(camada.fields())
+jam_feicao.setGeometry(jam_geom)
+jam_feicao.setAttribute(0, "Jambeiro")
+jam_feicao.setAttribute(1, 6828)
+provider.addFeature(jam_feicao)
+
+# Adiciona a camada criada ao painel do QGIS (interface gráfica)
+QgsProject.instance().addMapLayer(camada)
+
+
+# Exercício 3
+# Define o nome da camada
+nome_camada = "exer03"
+
+# Cria uma camada vetorial temporária do tipo ponto, com sistema de referência WGS 84
+camada = QgsVectorLayer("Point?crs=EPSG:4326", nome_camada, "memory")
+
+# Obtém o provedor de dados da camada, responsável por manipular feições e atributos
+provider = camada.dataProvider()
+
+# Adiciona o campo "nome" (tipo texto) à camada
+provider.addAttributes([QgsField("nome", QVariant.String)])
+
+# Adiciona o campo "populacao" (tipo inteiro) à camada
+provider.addAttributes([QgsField("populacao", QVariant.Int)])
+
+# Adiciona o campo "populacao" (tipo double) à camada
+provider.addAttributes([QgsField("area", QVariant.Double)])
+
+# Atualiza a definição de campos da camada para refletir os novos atributos
+camada.updateFields()
+
+# Define os pontos com coordenadas geográficas
+jcr = QgsPointXY(-45.96642, -23.30555)   # Jacareí
+stb = QgsPointXY(-45.88441, -23.39755)   # Santa Branca
+jam = QgsPointXY(-45.69457, -23.25871)   # Jambeiro
+
+# Converte os pontos QgsPointXY para objetos QgsGeometry, exigidos pelas feições
+jcr_geom = QgsGeometry.fromPointXY(jcr)
+stb_geom = QgsGeometry.fromPointXY(stb)
+jam_geom = QgsGeometry.fromPointXY(jam)
+
+# Cria uma feição para Jacareí e define sua geometria e atributos
+jcr_feicao = QgsFeature(camada.fields())
+jcr_feicao.setGeometry(jcr_geom)           # Define a geometria (ponto)
+jcr_feicao.setAttribute(0, "Jacareí")      # Define o nome (campo na posição 0)
+jcr_feicao.setAttribute(1, 240275)         # Define a população (campo na posição 1)
+jcr_feicao.setAttribute(2, 464.272)        # Define a área (campo na posição 2)
+provider.addFeature(jcr_feicao)            # Adiciona a feição ao provedor de dados
+
+# Cria uma feição para Santa Branca e define sua geometria e atributos
+stb_feicao = QgsFeature(camada.fields())
+stb_feicao.setGeometry(stb_geom)
+stb_feicao.setAttribute(0, "Santa Branca")
+stb_feicao.setAttribute(1, 13975)
+stb_feicao.setAttribute(2, 272.238)
+provider.addFeature(stb_feicao)
+
+# Cria uma feição para Jambeiro e define sua geometria e atributos
+jam_feicao = QgsFeature(camada.fields())
+jam_feicao.setGeometry(jam_geom)
+jam_feicao.setAttribute(0, "Jambeiro")
+jam_feicao.setAttribute(1, 6828)
+jam_feicao.setAttribute(2, 184.413)
+provider.addFeature(jam_feicao)
+
+# Adiciona a camada criada ao painel do QGIS (interface gráfica)
+QgsProject.instance().addMapLayer(camada)
+
+
+# Exercício 4
+# Lista de cidades: [nome, longitude, latitude, população, área]
+cidades = [
+    ["Guararema", -46.03542, -23.41555, 31236, 270.816],
+    ["Jacareí", -45.96642, -23.30555, 240275, 464.272],
+    ["Jambeiro", -45.69457, -23.25871, 6828, 184.413],
+    ["Paraibuna", -45.673288, -23.373758, 17667, 809.576],
+    ["Salesópolis", -45.847091, -23.531665, 15202, 424.997],
+    ["Santa Branca", -45.88441, -23.39755, 13975, 272.238]
+]
+
+# Define o nome da camada
+nome_camada = "exer04"
+
+# Cria uma camada vetorial temporária do tipo ponto, com sistema de referência WGS 84
+camada = QgsVectorLayer("Point?crs=EPSG:4326", nome_camada, "memory")
+
+# Obtém o provedor de dados da camada
+provider = camada.dataProvider()
+
+# Define os campos (atributos) da camada
+provider.addAttributes([
+    QgsField("nome", QVariant.String),
+    QgsField("populacao", QVariant.Int),
+    QgsField("area", QVariant.Double)
+])
+
+# Atualiza a definição dos campos
+camada.updateFields()
+
+# Percorre a lista de cidades e adiciona cada uma como uma feição
+for cidade in cidades:
+    # Define o ponto com coordenadas geográficas
+    ponto = QgsPointXY(cidade[1], cidade[2])
+    # Converte o ponto QgsPointXY para objeto QgsGeometry, exigido pela feição
+    ponto_geom = QgsGeometry.fromPointXY(ponto)
+    # Cria uma feição e define sua geometria e atributos
+    feicao = QgsFeature(camada.fields())
+    feicao.setGeometry(ponto_geom)     # Define a geometria (ponto)
+    feicao.setAttribute(0, cidade[0])  # Define o nome (campo na posição 0)
+    feicao.setAttribute(1, cidade[3])  # Define a população (campo na posição 1)
+    feicao.setAttribute(2, cidade[4])  # Define a área (campo na posição 2)
+    provider.addFeature(feicao)        # Adiciona a feição ao provedor de dados
+
+# Adiciona a camada ao painel do QGIS
+QgsProject.instance().addMapLayer(camada)
+
+
+
+# Exercício 5
+# Lista de cidades: [nome, longitude, latitude, população, área]
+cidades = [
+    ["Guararema", -46.03542, -23.41555, 31236, 270.816],
+    ["Jacareí", -45.96642, -23.30555, 240275, 464.272],
+    ["Jambeiro", -45.69457, -23.25871, 6828, 184.413],
+    ["Paraibuna", -45.673288, -23.373758, 17667, 809.576],
+    ["Salesópolis", -45.847091, -23.531665, 15202, 424.997],
+    ["Santa Branca", -45.88441, -23.39755, 13975, 272.238],
+    ["Lagoinha", -45.19012, -23.09025, 5083, 255.472],
+    ["São Luiz do Paraitinga", -45.31049, -23.22217, 10337, 617.315],
+]
+
+# Define o nome da camada
+nome_camada = "exer05"
+
+# Cria uma camada vetorial temporária do tipo ponto, com sistema de referência WGS 84
+camada = QgsVectorLayer("Point?crs=EPSG:4326", nome_camada, "memory")
+
+# Obtém o provedor de dados da camada
+provider = camada.dataProvider()
+
+# Define os campos (atributos) da camada
+provider.addAttributes([
+    QgsField("nome", QVariant.String),
+    QgsField("populacao", QVariant.Int),
+    QgsField("area", QVariant.Double)
+])
+
+# Atualiza a definição dos campos
+camada.updateFields()
+
+# Percorre a lista de cidades e adiciona cada uma como uma feição
+for cidade in cidades:
+    # Define o ponto com coordenadas geográficas
+    ponto = QgsPointXY(cidade[1], cidade[2])
+    # Converte o ponto QgsPointXY para objeto QgsGeometry, exigido pela feição
+    ponto_geom = QgsGeometry.fromPointXY(ponto)
+    # Cria uma feição e define sua geometria e atributos
+    feicao = QgsFeature(camada.fields())
+    feicao.setGeometry(ponto_geom)     # Define a geometria (ponto)
+    feicao.setAttribute(0, cidade[0])  # Define o nome (campo na posição 0)
+    feicao.setAttribute(1, cidade[3])  # Define a população (campo na posição 1)
+    feicao.setAttribute(2, cidade[4])  # Define a área (campo na posição 2)
+    provider.addFeature(feicao)        # Adiciona a feição ao provedor de dados
+
+# Adiciona a camada ao painel do QGIS
+QgsProject.instance().addMapLayer(camada)
+
