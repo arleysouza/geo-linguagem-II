@@ -1,0 +1,181 @@
+﻿# Exercício 1
+import csv
+
+entrada = "D:/pessoal/fatec/jacarei/Geo/LingProg-II/aulas-2025-1/Aula4 - dados/cidades-exer01.csv"
+# Abre o arquivo para leitura
+arquivo = open(entrada, mode="r", newline="", encoding="utf-8")
+leitor = csv.reader(arquivo, delimiter=";")
+
+# Cria uma camada temporária do tipo Point com feições com os campos nome e populacao
+camada = QgsVectorLayer('Point?crs=EPSG:4326&field=nome:string&field=populacao:integer&field=area:float', 'exer01', 'memory')
+# Obtém o provedor de dados
+provider = camada.dataProvider()
+campos = camada.fields() # Obtém os campos das feições
+
+for linha in leitor:
+    if linha[0] != 'nome':
+        # Cria o ponto com coordenadas X (longitude) e Y (latitude)
+        ponto = QgsPointXY(float(linha[1]), float(linha[2]))
+        
+        # Converte o ponto para uma geometria
+        ponto = QgsGeometry().fromPointXY(ponto)
+        
+        # Cria uma feição associada aos campos da camada
+        feicao = QgsFeature(campos)
+        
+        # Define a geometria da feição
+        feicao.setGeometry(ponto)
+        
+        # Define os atributos da feição
+        feicao.setAttribute("nome", linha[0])  # o nome está na coluna 0
+        feicao.setAttribute("populacao", int(linha[3]))  # a população está na coluna 3
+        feicao.setAttribute("area", float(linha[4]))  # a área está na coluna 4
+        
+        # Adiciona a feição ao provedor de dados
+        provider.addFeature(feicao)
+
+# fechar o arquivo
+arquivo.close()
+
+# Adiciona a camada ao projeto atual
+QgsProject().instance().addMapLayer(camada)
+
+
+
+# Exercício 2
+import csv
+
+entrada = "D:/bdgeo/uf/uf.gpkg"
+saida = "D:/pessoal/fatec/jacarei/Geo/LingProg-II/aulas-2025-1/exer02.csv"
+
+camada = QgsVectorLayer(entrada, "exer02", "ogr")
+
+with open(saida, mode="w", newline="", encoding="utf-8") as arquivo:
+    escritor = csv.writer(arquivo, delimiter=",")
+    escritor.writerow(["gid", "uf", "longitude", "latitude"])
+    
+    # Itera sobre as feições da camada
+    for feicao in camada.getFeatures():
+        gid = feicao["gid"]
+        uf = feicao["uf"]
+        geom = feicao.geometry()
+        ponto = geom.centroid()
+        ponto = ponto.asPoint()
+        longitude = ponto.x()
+        latitude = ponto.y()
+        
+        escritor.writerow([gid, uf, longitude, latitude]) # Escreve a linha no CSV
+
+
+
+# Exercício 3
+import csv
+
+entrada = "D:/pessoal/fatec/jacarei/Geo/LingProg-II/aulas-2025-1/Aula4 - dados/exer02.csv"
+# Abre o arquivo para leitura
+arquivo = open(entrada, mode="r", newline="", encoding="utf-8")
+leitor = csv.reader(arquivo, delimiter=",")
+
+# Cria uma camada temporária do tipo Point com feições com os campos nome e populacao
+camada = QgsVectorLayer('Point?crs=EPSG:4326&field=uf:string', 'exer03', 'memory')
+# Obtém o provedor de dados
+provider = camada.dataProvider()
+campos = camada.fields() # Obtém os campos das feições
+
+for linha in leitor:
+    if linha[0] != 'gid':
+        # Cria o ponto com coordenadas X (longitude) e Y (latitude)
+        ponto = QgsPointXY(float(linha[2]), float(linha[3]))
+        
+        # Converte o ponto para uma geometria
+        ponto = QgsGeometry().fromPointXY(ponto)
+        
+        # Cria uma feição associada aos campos da camada
+        feicao = QgsFeature(campos)
+        
+        # Define a geometria da feição
+        feicao.setGeometry(ponto)
+        
+        # Define os atributos da feição
+        feicao.setAttribute("uf", linha[1])  # o nome está na coluna 1
+        
+        # Adiciona a feição ao provedor de dados
+        provider.addFeature(feicao)
+
+# fechar o arquivo
+arquivo.close()
+
+# Adiciona a camada ao projeto atual
+QgsProject().instance().addMapLayer(camada)
+
+
+
+# Exercício 4
+import csv
+
+entrada = "D:/bdgeo/municipio/municipio.gpkg"
+saida = "D:/pessoal/fatec/jacarei/Geo/LingProg-II/aulas-2025-1/exer04.csv"
+
+camada = QgsVectorLayer(entrada, "exer04", "ogr")
+
+with open(saida, mode="w", newline="", encoding="utf-8") as arquivo:
+    escritor = csv.writer(arquivo, delimiter=",")
+    escritor.writerow(["gid", "municipio", "uf","longitude","latitude"])
+    
+    # Itera sobre as feições da camada
+    for feicao in camada.getFeatures():
+        if feicao["uf"] == "SP":
+            gid = feicao["gid"]
+            municipio = feicao["municipio"]
+            uf = feicao["uf"]
+            geom = feicao.geometry()
+            ponto = geom.centroid()
+            ponto = ponto.asPoint()
+            longitude = ponto.x()
+            latitude = ponto.y()
+            
+            escritor.writerow([gid, municipio, uf, longitude, latitude]) # Escreve a linha no CSV
+
+
+
+# Exercício 5
+import csv
+
+entrada = "D:/pessoal/fatec/jacarei/Geo/LingProg-II/aulas-2025-1/Aula4 - dados/exer04.csv"
+# Abre o arquivo para leitura
+arquivo = open(entrada, mode="r", newline="", encoding="utf-8")
+leitor = csv.reader(arquivo, delimiter=",")
+
+# Cria uma camada temporária do tipo Point com feições com os campos nome e populacao
+camada = QgsVectorLayer('Point?crs=EPSG:4326&field=municipio:string&field=uf:string', 'exer05', 'memory')
+# Obtém o provedor de dados
+provider = camada.dataProvider()
+campos = camada.fields() # Obtém os campos das feições
+
+for linha in leitor:
+    if linha[0] != 'gid':
+        # Cria o ponto com coordenadas X (longitude) e Y (latitude)
+        ponto = QgsPointXY(float(linha[3]), float(linha[4]))
+        
+        # Converte o ponto para uma geometria
+        ponto = QgsGeometry().fromPointXY(ponto)
+        
+        # Cria uma feição associada aos campos da camada
+        feicao = QgsFeature(campos)
+        
+        # Define a geometria da feição
+        feicao.setGeometry(ponto)
+        
+        # Define os atributos da feição
+        feicao.setAttribute("municipio", linha[1])  # o nome está na coluna 1
+        feicao.setAttribute("uf", linha[2])  # o nome está na coluna 2
+        
+        # Adiciona a feição ao provedor de dados
+        provider.addFeature(feicao)
+
+# fechar o arquivo
+arquivo.close()
+
+# Adiciona a camada ao projeto atual
+QgsProject().instance().addMapLayer(camada)
+
